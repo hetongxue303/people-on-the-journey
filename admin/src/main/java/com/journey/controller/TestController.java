@@ -1,5 +1,6 @@
 package com.journey.controller;
 
+import com.journey.annotation.LogPrint;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,8 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping("test")
+    @LogPrint("测试接口")
     public String test() {
-        return "hello word";
+        return "hello admin";
     }
 
 }

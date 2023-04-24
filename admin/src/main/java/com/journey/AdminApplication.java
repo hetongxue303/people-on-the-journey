@@ -4,16 +4,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * test
+ * 后台入口
  *
  * @author hy
  * @version 1.0
  */
 @SpringBootApplication
-public class TestApplication {
+public class AdminApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TestApplication.class, args);
+        SpringApplication.run(AdminApplication.class, args);
     }
 
 }
