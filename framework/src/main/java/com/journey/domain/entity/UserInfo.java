@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用户表
+ * 用户信息表
  *
  * @author hy
  * @version 1.0
@@ -18,22 +18,28 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("sys_user")
-@Schema(name = "用户表")
-public class User implements Serializable {
+@TableName("sys_userinfo")
+@Schema(name = "用户信息表")
+public class UserInfo implements Serializable {
 
     @TableId
-    @Schema(title = "用户ID")
+    @Schema(title = "用户信息ID")
     private Long id;
 
-    @Schema(title = "用户信息ID")
-    private Long userinfoId;
+    @Schema(title = "昵称")
+    private String nickname;
 
-    @Schema(title = "用户名")
-    private String username;
+    @Schema(title = "性别")
+    private Integer gender;
 
-    @Schema(title = "密码")
-    private String password;
+    @Schema(title = "邮箱")
+    private String email;
+
+    @Schema(title = "头像")
+    private String avatar;
+
+    @Schema(title = "简介")
+    private String intro;
 
     @TableLogic
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")

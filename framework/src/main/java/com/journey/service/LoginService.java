@@ -13,4 +13,5 @@ public interface LoginService {
 
     Result adminLogin(LoginVo loginVo);
 
+    Result adminLogout();
 }

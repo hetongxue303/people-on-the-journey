@@ -3,12 +3,15 @@ package com.journey.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.journey.domain.bo.UserInfoBo;
 import com.journey.domain.common.Result;
 import com.journey.domain.common.ResultPage;
+import com.journey.domain.dto.UserDto;
 import com.journey.domain.entity.User;
 import com.journey.domain.vo.SearchVo;
 import com.journey.domain.vo.UserVo;
 import com.journey.mapper.UserMapper;
+import com.journey.mapper.UserinfoMapper;
 import com.journey.service.UserService;
 import com.journey.utils.BeanCopyUtil;
 import com.journey.utils.MBPUtil;
@@ -16,8 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 用户业务处理
@@ -30,10 +36,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private UserinfoMapper userinfoMapper;
+
 
     @Override
     public Result selectAll() {
-        return Result.success(userMapper.selectList(null));
+        return Result.success(Optional.ofNullable(userMapper.selectList(null))
+                .orElse(new ArrayList<>())
+                .stream()
+                .map(item -> BeanCopyUtil.copyBean(item, UserDto.class)
+                        .setUserinfo(BeanCopyUtil.copyBean(userinfoMapper.selectById(item.getUserinfoId()), UserInfoBo.class)))
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -42,7 +56,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper.like(Objects.nonNull(searchVo.getKeywords()), User::getUsername, searchVo.getKeywords())
                 .orderByDesc(User::getId);
         Page<User> data = userMapper.selectPage(MBPUtil.generatePage(searchVo, User.class), wrapper);
-        return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
+        List<UserDto> list = Optional.ofNullable(data.getRecords())
+                .orElse(new ArrayList<>())
+                .stream()
+                .map(item -> BeanCopyUtil.copyBean(item, UserDto.class)
+                        .setUserinfo(BeanCopyUtil.copyBean(userinfoMapper.selectById(item.getUserinfoId()), UserInfoBo.class)))
+                .collect(Collectors.toList());
+        return Result.success(new ResultPage(data.getTotal(), list));
     }
 
     @Override

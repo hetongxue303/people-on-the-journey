@@ -47,4 +47,10 @@ public class LoginServiceImpl implements LoginService {
                 .put("timeout", tokenInfo.getTokenTimeout())
                 .build());
     }
+
+    @Override
+    public Result adminLogout() {
+        StpUtil.logout(StpUtil.getLoginId());
+        return Result.success();
+    }
 }

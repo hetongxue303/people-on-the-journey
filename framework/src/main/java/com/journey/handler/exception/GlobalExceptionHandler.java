@@ -1,5 +1,6 @@
 package com.journey.handler.exception;
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.journey.domain.common.Result;
 import com.journey.handler.exception.customs.SystemException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,14 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage());
         e.printStackTrace();
         return Result.error(Objects.isNull(e.getCode()) ? HttpStatus.INTERNAL_SERVER_ERROR.value() : e.getCode(), e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(NotLoginException.class)
+    public Result handlerSystemException(NotLoginException e) {
+        log.error(e.getMessage());
+        e.printStackTrace();
+        return Result.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
     }
 
 }
