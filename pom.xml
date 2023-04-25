@@ -129,6 +129,14 @@
                 <artifactId>qiniu-java-sdk</artifactId>
                 <version>7.12.1</version>
             </dependency>
+
+            <!-- sa-token -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <version>1.34.0</version>
+            </dependency>
+
             <!-- jjwt -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>

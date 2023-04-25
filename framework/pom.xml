@@ -74,6 +74,12 @@
             <artifactId>commons-io</artifactId>
         </dependency>
 
+        <!-- sa-token -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+        </dependency>
+
         <!-- openapi -->
         <dependency>
             <groupId>org.springdoc</groupId>
