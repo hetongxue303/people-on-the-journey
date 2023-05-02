@@ -38,6 +38,7 @@ public class ScenicSpotsController {
     @LogPrint("分页查询")
     @Operation(summary = "分页查询")
     public Result getScenicSpotsList(SearchVo searchVo) {
+        System.out.println("searchVo = " + searchVo);
         return scenicSpotsService.selectList(searchVo);
     }
 

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * psa properties
+ * rsa properties
  *
  * @author hy
  * @version 1.0

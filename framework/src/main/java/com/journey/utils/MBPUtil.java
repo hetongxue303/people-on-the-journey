@@ -14,4 +14,5 @@ public class MBPUtil {
     public static <T> Page<T> generatePage(SearchVo searchVo, Class<T> clazz) {
         return new Page<>(searchVo.getCurrent(), searchVo.getSize());
     }
+
 }
