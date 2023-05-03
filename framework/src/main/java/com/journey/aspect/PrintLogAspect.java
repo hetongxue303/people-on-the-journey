@@ -1,7 +1,7 @@
 package com.journey.aspect;
 
 import com.alibaba.fastjson2.JSON;
-import com.journey.annotation.LogPrint;
+import com.journey.annotation.PrintLog;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,16 +24,16 @@ import java.util.Objects;
 @Slf4j
 @Aspect
 @Component
-public class LogPrintAspect {
+public class PrintLogAspect {
 
-    @Pointcut("@annotation(com.journey.annotation.LogPrint)")
-    public void logPrint() {
+    @Pointcut("@annotation(com.journey.annotation.PrintLog)")
+    public void printLog() {
     }
 
-    @Around("logPrint()")
+    @Around("printLog()")
     public Object handlerLogging(ProceedingJoinPoint joinPoint) throws Throwable {
         long beginTime = System.currentTimeMillis();
-        LogPrint logging = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(LogPrint.class);
+        PrintLog logging = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(PrintLog.class);
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         log.info("===============================begin===============================");
         log.info("接口描述         : {}", logging.value());

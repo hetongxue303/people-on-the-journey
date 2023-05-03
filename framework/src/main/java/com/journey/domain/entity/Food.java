@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 美食表
+ * 美食实体
  *
  * @author hy
  * @version 1.0
@@ -19,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("j_food")
-@Schema(name = "美食表")
+@Schema(name = "美食实体")
 public class Food implements Serializable {
 
     @TableId
@@ -29,11 +29,14 @@ public class Food implements Serializable {
     @Schema(title = "名称")
     private String name;
 
+    @Schema(title = "介绍")
+    private String intro;
+
     @TableLogic
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")
     private Boolean isDel;
 
-    @Schema(title = "发表时间")
+    @Schema(title = "创建时间")
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 

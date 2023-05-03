@@ -1,6 +1,5 @@
-package com.journey.domain.bo;
+package com.journey.domain.vo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 用户信息表
+ * 用户信息VO
  *
  * @author hy
  * @version 1.0
@@ -17,9 +16,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("sys_userinfo")
-@Schema(name = "用户信息BO")
-public class UserInfoBo implements Serializable {
+@Schema(name = "用户信息vo")
+public class UserInfoVo implements Serializable {
 
     @Schema(title = "用户信息ID")
     private Long id;

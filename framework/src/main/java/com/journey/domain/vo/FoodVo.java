@@ -30,6 +30,9 @@ public class FoodVo implements Serializable {
     @NotBlank(message = "美食名称不能为空")
     private String name;
 
+    @Schema(title = "介绍")
+    private String intro;
+
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")
     private Boolean isDel;
 

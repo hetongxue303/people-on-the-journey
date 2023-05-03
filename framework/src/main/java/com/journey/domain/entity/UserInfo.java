@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用户信息表
+ * 用户信息实体
  *
  * @author hy
  * @version 1.0
@@ -19,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("sys_userinfo")
-@Schema(name = "用户信息表")
+@Schema(name = "用户信息实体")
 public class UserInfo implements Serializable {
 
     @TableId
@@ -45,7 +45,7 @@ public class UserInfo implements Serializable {
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")
     private Boolean isDel;
 
-    @Schema(title = "发表时间")
+    @Schema(title = "创建时间")
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 

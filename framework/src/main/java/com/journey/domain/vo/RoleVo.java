@@ -1,47 +1,45 @@
-package com.journey.domain.entity;
+package com.journey.domain.vo;
 
-import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 旅行社实体
+ * 角色VO
  *
  * @author hy
  * @version 1.0
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@TableName("j_travel_agency")
-@Schema(name = "旅行社实体")
-public class TravelAgency implements Serializable {
+@NoArgsConstructor
+@Accessors(chain = true)
+@Schema(name = "角色VO")
+public class RoleVo implements Serializable {
 
-    @TableId
-    @Schema(title = "旅行社ID")
+    @Schema(title = "角色ID")
     private Long id;
 
-    @Schema(title = "名称")
+    @Schema(title = "角色名称")
+    @NotBlank(message = "角色名称不能为空")
     private String name;
 
-    @Schema(title = "介绍")
+    @Schema(title = "简介")
     private String intro;
 
-    @TableLogic
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")
     private Boolean isDel;
 
     @Schema(title = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     @Schema(title = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
 }

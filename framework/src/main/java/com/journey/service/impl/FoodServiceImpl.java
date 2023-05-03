@@ -42,7 +42,7 @@ public class FoodServiceImpl extends ServiceImpl<FoodMapper, Food> implements Fo
         wrapper.like(Objects.nonNull(searchVo.getKeywords()), Food::getName, searchVo.getKeywords())
                 .orderByDesc(Food::getId);
         Page<Food> data = foodMapper.selectPage(MBPUtil.generatePage(searchVo, Food.class), wrapper);
-        return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
+        return Result.success(new ResultPage(data.getTotal(), BeanCopyUtil.copyBeanList(data.getRecords(), FoodVo.class)));
     }
 
     @Override

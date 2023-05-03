@@ -11,6 +11,6 @@ import java.lang.annotation.*;
 @Documented
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LogPrint {
+public @interface PrintLog {
     String value() default "";
 }

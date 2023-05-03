@@ -3,18 +3,21 @@ package com.journey.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.journey.domain.bo.UserInfoBo;
 import com.journey.domain.common.Result;
 import com.journey.domain.common.ResultPage;
 import com.journey.domain.dto.UserDto;
 import com.journey.domain.entity.User;
+import com.journey.domain.entity.UserInfo;
 import com.journey.domain.vo.SearchVo;
+import com.journey.domain.vo.UserInfoVo;
 import com.journey.domain.vo.UserVo;
+import com.journey.handler.exception.customs.SystemException;
 import com.journey.mapper.UserMapper;
 import com.journey.mapper.UserinfoMapper;
 import com.journey.service.UserService;
 import com.journey.utils.BeanCopyUtil;
 import com.journey.utils.MBPUtil;
+import com.journey.utils.RSAUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +41,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
     @Resource
     private UserinfoMapper userinfoMapper;
+    @Resource
+    private RSAUtil rsaUtil;
 
 
     @Override
@@ -46,7 +51,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .orElse(new ArrayList<>())
                 .stream()
                 .map(item -> BeanCopyUtil.copyBean(item, UserDto.class)
-                        .setUserinfo(BeanCopyUtil.copyBean(userinfoMapper.selectById(item.getUserinfoId()), UserInfoBo.class)))
+                        .setUserinfo(BeanCopyUtil.copyBean(userinfoMapper.selectById(item.getUserinfoId()), UserInfoVo.class)))
                 .collect(Collectors.toList()));
     }
 
@@ -60,7 +65,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .orElse(new ArrayList<>())
                 .stream()
                 .map(item -> BeanCopyUtil.copyBean(item, UserDto.class)
-                        .setUserinfo(BeanCopyUtil.copyBean(userinfoMapper.selectById(item.getUserinfoId()), UserInfoBo.class)))
+                        .setUserinfo(BeanCopyUtil.copyBean(userinfoMapper.selectById(item.getUserinfoId()), UserInfoVo.class)))
                 .collect(Collectors.toList());
         return Result.success(new ResultPage(data.getTotal(), list));
     }
@@ -68,24 +73,51 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result saveUser(UserVo userVo) {
-        return Result.isStatus(userMapper.insert(BeanCopyUtil.copyBean(userVo, User.class)));
+        // 添加用户信息
+        UserInfo userinfo = BeanCopyUtil.copyBean(userVo.getUserinfo(), UserInfo.class);
+        int result = userinfoMapper.insert(userinfo);
+        // 新增用户
+        if (result == 0)
+            throw new SystemException("新增用户失败");
+        User user = BeanCopyUtil.copyBean(userVo, User.class);
+        user.setUserinfoId(userinfo.getId());
+        user.setPassword(rsaUtil.encrypt(user.getPassword()));
+        return Result.isStatus(userMapper.insert(user));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result updateUser(UserVo userVo) {
-        return Result.isStatus(userMapper.updateById(BeanCopyUtil.copyBean(userVo, User.class)));
+        // 修改用户信息
+        UserInfo userinfo = BeanCopyUtil.copyBean(userVo.getUserinfo(), UserInfo.class);
+        int result = userinfoMapper.updateById(userinfo);
+        // 更新用户
+        if (result == 0)
+            throw new SystemException("更新用户失败");
+        User user = BeanCopyUtil.copyBean(userVo, User.class);
+        user.setPassword(rsaUtil.encrypt(user.getPassword()));
+        return Result.isStatus(userMapper.updateById(user));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result deleteUser(Long id) {
+        int result = userinfoMapper.deleteById(userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getId, id))
+                .getUserinfoId());
+        if (result == 0)
+            throw new SystemException("删除用户失败");
         return Result.isStatus(userMapper.deleteById(id));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result batchDeleteUser(List<Long> ids) {
+        int result = userinfoMapper.deleteBatchIds(userMapper.selectList(new LambdaQueryWrapper<User>().in(User::getId, ids))
+                .stream()
+                .map(User::getUserinfoId)
+                .collect(Collectors.toList()));
+        if (result == 0)
+            throw new SystemException("删除用户失败");
         return Result.isStatus(userMapper.deleteBatchIds(ids));
     }
 

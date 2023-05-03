@@ -30,6 +30,9 @@ public class UserVo {
     @Schema(title = "密码")
     private String password;
 
+    @Schema(title = "用户信息")
+    private UserInfoVo userinfo;
+
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")
     private Boolean isDel;
 

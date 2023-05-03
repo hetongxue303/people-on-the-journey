@@ -1,6 +1,6 @@
 package com.journey.controller;
 
-import com.journey.annotation.LogPrint;
+import com.journey.annotation.PrintLog;
 import com.journey.domain.common.Result;
 import com.journey.domain.vo.ScenicSpotsVo;
 import com.journey.domain.vo.SearchVo;
@@ -28,14 +28,14 @@ public class ScenicSpotsController {
     private ScenicSpotsService scenicSpotsService;
 
     @GetMapping("all")
-    @LogPrint("查询所有景点")
+    @PrintLog("查询所有景点")
     @Operation(summary = "查询所有景点")
     public Result getScenicSpotsAll() {
         return scenicSpotsService.selectAll();
     }
 
     @GetMapping("list")
-    @LogPrint("分页查询")
+    @PrintLog("分页查询")
     @Operation(summary = "分页查询")
     public Result getScenicSpotsList(SearchVo searchVo) {
         System.out.println("searchVo = " + searchVo);
@@ -43,28 +43,28 @@ public class ScenicSpotsController {
     }
 
     @PostMapping("add")
-    @LogPrint("添加景点")
+    @PrintLog("添加景点")
     @Operation(summary = "添加景点")
     public Result addScenicSpots(@Valid @RequestBody ScenicSpotsVo scenicSpotsVo) {
         return scenicSpotsService.saveScenicSpots(scenicSpotsVo);
     }
 
     @PutMapping("update")
-    @LogPrint("更新景点")
+    @PrintLog("更新景点")
     @Operation(summary = "更新景点")
     public Result modifyScenicSpots(@Valid @RequestBody ScenicSpotsVo scenicSpotsVo) {
         return scenicSpotsService.updateScenicSpots(scenicSpotsVo);
     }
 
     @DeleteMapping("delete/{id}")
-    @LogPrint("删除景点")
+    @PrintLog("删除景点")
     @Operation(summary = "删除景点")
     public Result removeScenicSpots(@PathVariable("id") Long id) {
         return scenicSpotsService.deleteScenicSpots(id);
     }
 
     @DeleteMapping("batch/delete")
-    @LogPrint("批量删除景点")
+    @PrintLog("批量删除景点")
     @Operation(summary = "批量删除景点")
     public Result batchRemoveScenicSpots(@RequestBody List<Long> ids) {
         return scenicSpotsService.batchDeleteScenicSpots(ids);

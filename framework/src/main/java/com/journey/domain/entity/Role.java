@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 旅行社实体
+ * 角色实体
  *
  * @author hy
  * @version 1.0
@@ -18,18 +18,18 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("j_travel_agency")
-@Schema(name = "旅行社实体")
-public class TravelAgency implements Serializable {
+@TableName("sys_role")
+@Schema(name = "角色实体")
+public class Role implements Serializable {
 
     @TableId
-    @Schema(title = "旅行社ID")
+    @Schema(title = "角色ID")
     private Long id;
 
-    @Schema(title = "名称")
+    @Schema(title = "角色名称")
     private String name;
 
-    @Schema(title = "介绍")
+    @Schema(title = "简介")
     private String intro;
 
     @TableLogic

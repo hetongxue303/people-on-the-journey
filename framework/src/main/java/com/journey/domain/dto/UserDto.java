@@ -1,6 +1,6 @@
 package com.journey.domain.dto;
 
-import com.journey.domain.bo.UserInfoBo;
+import com.journey.domain.vo.UserInfoVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,12 +29,12 @@ public class UserDto {
     private String username;
 
     @Schema(title = "用户信息")
-    private UserInfoBo userinfo;
+    private UserInfoVo userinfo;
 
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")
     private Boolean isDel;
 
-    @Schema(title = "发表时间")
+    @Schema(title = "创建时间")
     private Date createTime;
 
     @Schema(title = "更新时间")

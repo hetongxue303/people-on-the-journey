@@ -1,6 +1,6 @@
 package com.journey.controller;
 
-import com.journey.annotation.LogPrint;
+import com.journey.annotation.PrintLog;
 import com.journey.domain.common.Result;
 import com.journey.domain.vo.SearchVo;
 import com.journey.domain.vo.TravelAgencyVo;
@@ -28,42 +28,42 @@ public class TravelAgencyController {
     private TravelAgencyService travelAgencyService;
 
     @GetMapping("all")
-    @LogPrint("查询所有旅行社")
+    @PrintLog("查询所有旅行社")
     @Operation(summary = "查询所有旅行社")
     public Result getTravelAgencyAll() {
         return travelAgencyService.selectAll();
     }
 
     @GetMapping("list")
-    @LogPrint("分页查询")
+    @PrintLog("分页查询")
     @Operation(summary = "分页查询")
     public Result getTravelAgencyList(SearchVo searchVo) {
         return travelAgencyService.selectList(searchVo);
     }
 
     @PostMapping("add")
-    @LogPrint("添加旅行社")
+    @PrintLog("添加旅行社")
     @Operation(summary = "添加旅行社")
     public Result addTravelAgency(@Valid @RequestBody TravelAgencyVo travelAgencyVo) {
         return travelAgencyService.saveTravelAgency(travelAgencyVo);
     }
 
     @PutMapping("update")
-    @LogPrint("更新旅行社")
+    @PrintLog("更新旅行社")
     @Operation(summary = "更新旅行社")
     public Result modifyTravelAgency(@Valid @RequestBody TravelAgencyVo travelAgencyVo) {
         return travelAgencyService.updateTravelAgency(travelAgencyVo);
     }
 
     @DeleteMapping("delete/{id}")
-    @LogPrint("删除旅行社")
+    @PrintLog("删除旅行社")
     @Operation(summary = "删除旅行社")
     public Result removeTravelAgency(@PathVariable("id") Long id) {
         return travelAgencyService.deleteTravelAgency(id);
     }
 
     @DeleteMapping("batch/delete")
-    @LogPrint("批量删除旅行社")
+    @PrintLog("批量删除旅行社")
     @Operation(summary = "批量删除旅行社")
     public Result batchRemoveTravelAgency(@RequestBody List<Long> ids) {
         return travelAgencyService.batchDeleteTravelAgency(ids);
