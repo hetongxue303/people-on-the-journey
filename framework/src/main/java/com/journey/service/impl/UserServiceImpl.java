@@ -121,4 +121,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return Result.isStatus(userMapper.deleteBatchIds(ids));
     }
 
+    @Override
+    public Result getUserInfo(Long id) {
+        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getId, id));
+        UserInfo userInfo = userinfoMapper.selectOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getId, user.getUserinfoId()));
+        UserDto userDto = BeanCopyUtil.copyBean(user, UserDto.class);
+        userDto.setUserinfo(BeanCopyUtil.copyBean(userInfo, UserInfoVo.class));
+        return Result.success(userDto);
+    }
+
 }

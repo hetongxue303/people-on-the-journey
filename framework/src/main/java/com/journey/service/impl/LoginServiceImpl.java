@@ -10,6 +10,7 @@ import com.journey.domain.vo.LoginVo;
 import com.journey.handler.exception.customs.SystemException;
 import com.journey.mapper.UserMapper;
 import com.journey.service.LoginService;
+import com.journey.service.UserService;
 import com.journey.utils.RSAUtil;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,8 @@ public class LoginServiceImpl implements LoginService {
     @Resource
     private UserMapper userMapper;
     @Resource
+    private UserService userService;
+    @Resource
     private RSAUtil rsaUtil;
 
     @Override
@@ -45,6 +48,7 @@ public class LoginServiceImpl implements LoginService {
                 .put("name", tokenInfo.getTokenName())
                 .put("value", tokenInfo.getTokenValue())
                 .put("timeout", tokenInfo.getTokenTimeout())
+                .put("user", userService.getUserInfo(user.getId()))
                 .build());
     }
 

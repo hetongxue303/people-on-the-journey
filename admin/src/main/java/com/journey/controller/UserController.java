@@ -27,6 +27,13 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @GetMapping("userinfo/{id}")
+    @PrintLog("获取用户信息")
+    @Operation(summary = "获取用户信息")
+    public Result getUserInfo(@PathVariable("id") Long id) {
+        return userService.getUserInfo(id);
+    }
+
     @GetMapping("all")
     @PrintLog("查询所有用户")
     @Operation(summary = "查询所有用户")

@@ -26,6 +26,9 @@ public class Role implements Serializable {
     @Schema(title = "角色ID")
     private Long id;
 
+    @Schema(title = "角色标识")
+    private String code;
+
     @Schema(title = "角色名称")
     private String name;
 

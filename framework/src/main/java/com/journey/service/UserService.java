@@ -56,4 +56,5 @@ public interface UserService extends IService<User> {
      */
     Result batchDeleteUser(List<Long> ids);
 
+    Result getUserInfo(Long id);
 }
