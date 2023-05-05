@@ -74,6 +74,17 @@
             <artifactId>commons-io</artifactId>
         </dependency>
 
+        <!-- qiniu -->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+        </dependency>
+        <!-- gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+
         <!-- sa-token -->
         <dependency>
             <groupId>cn.dev33</groupId>

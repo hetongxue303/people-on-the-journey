@@ -10,4 +10,5 @@ public interface CommonConstant {
     String UNKNOWN = "未知";
 
     String APPLICATION_JSON = "application/json;charset=utf-8";
+
 }

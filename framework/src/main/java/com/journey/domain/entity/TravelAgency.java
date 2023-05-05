@@ -29,6 +29,9 @@ public class TravelAgency implements Serializable {
     @Schema(title = "名称")
     private String name;
 
+    @Schema(title = "图片")
+    private String image;
+
     @Schema(title = "介绍")
     private String intro;
 
