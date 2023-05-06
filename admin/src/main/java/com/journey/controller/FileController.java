@@ -42,7 +42,6 @@ public class FileController {
     }
 
     @PostMapping("upload/scenic-spots")
-    @PrintLog("上传景区图片")
     @Operation(summary = "上传景区图片")
     public Result uploadScenicSpots(MultipartFile file) {
         return fileService.uploadImage(file, QINiuPathEnum.SCENIC_SPOTS);
