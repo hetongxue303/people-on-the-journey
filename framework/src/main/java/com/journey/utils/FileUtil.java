@@ -14,8 +14,8 @@ import java.util.UUID;
  * @version 1.0
  */
 public class FileUtil {
-    private static final String DEFAULT_FILE_FORMAT = "yyyyMMssHHmmss";
-    private static final String DEFAULT_MONTH_FORMAT = "yyyyMMssHHmmss";
+    private static final String DEFAULT_FILE_FORMAT = "yyyyMMddHHmmss";
+    private static final String DEFAULT_MONTH_FORMAT = "yyyy-MM-dd";
 
     /**
      * 通过文件名生成文件路径
@@ -26,10 +26,10 @@ public class FileUtil {
      * @param monthFormat 月份文件夹格式
      */
     public static String generateFilePath(MultipartFile file, String path, String fileFormat, String monthFormat) {
-        String monthDir = new SimpleDateFormat(Objects.isNull(monthFormat) ? DEFAULT_MONTH_FORMAT : monthFormat).format(new Date());
+        String monthDir = new SimpleDateFormat(Objects.isNull(monthFormat) ? DEFAULT_MONTH_FORMAT : monthFormat).format(new Date()) + "/";
         String fileName = new SimpleDateFormat(Objects.isNull(fileFormat) ? DEFAULT_FILE_FORMAT : fileFormat).format(new Date()) + UUID.randomUUID()
                 .toString()
-                .replace("-", "") + getFileExtension(file);
+                .replace("-", "") + getFileExtension(file).toLowerCase();
         return path + monthDir + fileName;
     }
 

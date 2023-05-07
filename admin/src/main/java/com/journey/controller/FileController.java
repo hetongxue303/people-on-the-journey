@@ -1,6 +1,5 @@
 package com.journey.controller;
 
-import com.journey.annotation.PrintLog;
 import com.journey.domain.common.Result;
 import com.journey.enums.QINiuPathEnum;
 import com.journey.service.FileService;
@@ -28,14 +27,12 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("upload/foods")
-    @PrintLog("上传食物图片")
     @Operation(summary = "上传食物图片")
     public Result uploadFoods(MultipartFile file) {
         return fileService.uploadImage(file, QINiuPathEnum.FOOD);
     }
 
     @PostMapping("upload/travel-agency")
-    @PrintLog("上传旅游社图片")
     @Operation(summary = "上传旅游社图片")
     public Result uploadTravelAgency(MultipartFile file) {
         return fileService.uploadImage(file, QINiuPathEnum.TRAVEL_AGENCY);

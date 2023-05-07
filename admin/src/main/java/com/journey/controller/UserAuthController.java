@@ -15,31 +15,38 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
- * 后台安全模块
+ * 用户安全模块
  *
  * @author hy
  * @version 1.0
  */
 @RestController
-@RequestMapping("admin")
-@Schema(name = "后台安全模块")
-public class AdminAuthController {
+@RequestMapping("user")
+@Schema(name = "用户安全模块")
+public class UserAuthController {
 
     @Resource
     private LoginService loginService;
 
     @PostMapping("login")
-    @PrintLog("后台登陆")
-    @Operation(summary = "后台登陆")
-    public Result adminLogin(@Valid @RequestBody LoginVo loginVo) {
-        return loginService.adminLogin(loginVo);
+    @PrintLog("用户登陆")
+    @Operation(summary = "用户登陆")
+    public Result login(@Valid @RequestBody LoginVo loginVo) {
+        return loginService.userLogin(loginVo);
+    }
+
+    @PostMapping("register")
+    @PrintLog("用户注册")
+    @Operation(summary = "用户注册")
+    public Result register(@Valid @RequestBody LoginVo loginVo) {
+        return loginService.userRegister(loginVo);
     }
 
     @PostMapping("logout")
-    @PrintLog("后台注销")
-    @Operation(summary = "注销")
-    public Result adminLogout() {
-        return loginService.adminLogout();
+    @PrintLog("用户注销")
+    @Operation(summary = "用户注销")
+    public Result logout() {
+        return loginService.userLogout();
     }
 
 }

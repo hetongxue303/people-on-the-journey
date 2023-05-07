@@ -14,4 +14,10 @@ public interface LoginService {
     Result adminLogin(LoginVo loginVo);
 
     Result adminLogout();
+
+    Result userLogin(LoginVo loginVo);
+
+    Result userLogout();
+
+    Result userRegister(LoginVo loginVo);
 }

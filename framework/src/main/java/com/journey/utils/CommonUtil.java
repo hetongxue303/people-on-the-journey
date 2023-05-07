@@ -52,4 +52,16 @@ public class CommonUtil {
         return result;
     }
 
+    public static String randomCode(int length) {
+        String randomcode = "";
+        for (int i = 0; i < length; i++) {
+            //52个字母与6个大小写字母间的符号；范围为91~96
+            int value = (int) (Math.random() * 58 + 65);
+            while (value >= 91 && value <= 96)
+                value = (int) (Math.random() * 58 + 65);
+            randomcode = randomcode + (char) value;
+
+        }
+        return randomcode;
+    }
 }
