@@ -2,6 +2,7 @@ package com.journey.service;
 
 import com.journey.domain.common.Result;
 import com.journey.domain.vo.LoginVo;
+import com.journey.domain.vo.UpwVo;
 
 /**
  * 登陆业务
@@ -20,4 +21,6 @@ public interface LoginService {
     Result userLogout();
 
     Result userRegister(LoginVo loginVo);
+
+    Result updatePassword(UpwVo upwVo);
 }

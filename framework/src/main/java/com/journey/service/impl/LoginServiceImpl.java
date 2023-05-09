@@ -5,9 +5,12 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.journey.domain.common.Result;
+import com.journey.domain.dto.UserDto;
 import com.journey.domain.entity.User;
 import com.journey.domain.entity.UserInfo;
 import com.journey.domain.vo.LoginVo;
+import com.journey.domain.vo.UpwVo;
+import com.journey.domain.vo.UserInfoVo;
 import com.journey.handler.exception.customs.SystemException;
 import com.journey.mapper.UserMapper;
 import com.journey.mapper.UserinfoMapper;
@@ -16,6 +19,7 @@ import com.journey.service.UserService;
 import com.journey.utils.BeanCopyUtil;
 import com.journey.utils.CommonUtil;
 import com.journey.utils.RSAUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,11 +81,18 @@ public class LoginServiceImpl implements LoginService {
         StpUtil.login(user.getId());
         // 拿到token
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+        // 拿到用户信息
+        UserInfo userInfo = userinfoMapper.selectOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getId, user.getUserinfoId()));
+        UserDto userDto = BeanCopyUtil.copyBean(user, UserDto.class);
+        userDto.setUserinfo(BeanCopyUtil.copyBean(userInfo, UserInfoVo.class));
         return Result.success(MapUtil.builder()
                 .put("name", tokenInfo.getTokenName())
                 .put("value", tokenInfo.getTokenValue())
                 .put("timeout", tokenInfo.getTokenTimeout())
-                .put("user", userService.getUserInfo(user.getId()))
+                .put("userId", user.getId())
+                .put("admin", false)
+                .put("username", user.getUsername())
+                .put("userinfo", userDto.getUserinfo())
                 .build());
     }
 
@@ -106,5 +117,19 @@ public class LoginServiceImpl implements LoginService {
             result = userMapper.insert(user);
         }
         return Result.isStatus(result);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result updatePassword(UpwVo upwVo) {
+        // 判断密码是否一致
+        if (!Objects.deepEquals(upwVo.getNewPassword(), upwVo.getConfirmPassword()))
+            throw new SystemException(HttpStatus.BAD_REQUEST.value(), "密码不一致");
+        // 判断原密码
+        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getId, StpUtil.getLoginId()));
+        if (!rsaUtil.check(upwVo.getOldPassword(), user.getPassword()))
+            throw new SystemException(HttpStatus.BAD_REQUEST.value(), "原密码不正确");
+        return Result.isStatus(userMapper.updateById(new User().setId(user.getId())
+                .setPassword(rsaUtil.encrypt(upwVo.getNewPassword()))));
     }
 }

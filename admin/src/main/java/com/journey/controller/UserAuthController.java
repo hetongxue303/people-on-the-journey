@@ -3,13 +3,11 @@ package com.journey.controller;
 import com.journey.annotation.PrintLog;
 import com.journey.domain.common.Result;
 import com.journey.domain.vo.LoginVo;
+import com.journey.domain.vo.UpwVo;
 import com.journey.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -47,6 +45,13 @@ public class UserAuthController {
     @Operation(summary = "用户注销")
     public Result logout() {
         return loginService.userLogout();
+    }
+
+    @PutMapping("update/password")
+    @PrintLog("用户密码修改")
+    @Operation(summary = "用户密码修改")
+    public Result updatePassword(@Valid @RequestBody UpwVo upwVo) {
+        return loginService.updatePassword(upwVo);
     }
 
 }
