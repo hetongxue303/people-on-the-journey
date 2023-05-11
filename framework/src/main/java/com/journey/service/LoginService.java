@@ -4,6 +4,8 @@ import com.journey.domain.common.Result;
 import com.journey.domain.vo.LoginVo;
 import com.journey.domain.vo.UpwVo;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 登陆业务
  *
@@ -23,4 +25,6 @@ public interface LoginService {
     Result userRegister(LoginVo loginVo);
 
     Result updatePassword(UpwVo upwVo);
+
+    Result getUserinfo(@NotBlank(message = "您还未登录") Object loginId);
 }

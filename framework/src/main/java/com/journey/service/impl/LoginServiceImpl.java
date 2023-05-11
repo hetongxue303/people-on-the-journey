@@ -5,7 +5,6 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.journey.domain.common.Result;
-import com.journey.domain.dto.UserDto;
 import com.journey.domain.entity.User;
 import com.journey.domain.entity.UserInfo;
 import com.journey.domain.vo.LoginVo;
@@ -83,8 +82,6 @@ public class LoginServiceImpl implements LoginService {
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         // 拿到用户信息
         UserInfo userInfo = userinfoMapper.selectOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getId, user.getUserinfoId()));
-        UserDto userDto = BeanCopyUtil.copyBean(user, UserDto.class);
-        userDto.setUserinfo(BeanCopyUtil.copyBean(userInfo, UserInfoVo.class));
         return Result.success(MapUtil.builder()
                 .put("name", tokenInfo.getTokenName())
                 .put("value", tokenInfo.getTokenValue())
@@ -92,7 +89,7 @@ public class LoginServiceImpl implements LoginService {
                 .put("userId", user.getId())
                 .put("admin", false)
                 .put("username", user.getUsername())
-                .put("userinfo", userDto.getUserinfo())
+                .put("userinfo", BeanCopyUtil.copyBean(userInfo, UserInfoVo.class))
                 .build());
     }
 
@@ -131,5 +128,12 @@ public class LoginServiceImpl implements LoginService {
             throw new SystemException(HttpStatus.BAD_REQUEST.value(), "原密码不正确");
         return Result.isStatus(userMapper.updateById(new User().setId(user.getId())
                 .setPassword(rsaUtil.encrypt(upwVo.getNewPassword()))));
+    }
+
+    @Override
+    public Result getUserinfo(Object loginId) {
+        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getId, loginId));
+        UserInfo userInfo = userinfoMapper.selectOne(new LambdaQueryWrapper<UserInfo>().eq(Objects.nonNull(user.getId()), UserInfo::getId, user.getUserinfoId()));
+        return Result.success(BeanCopyUtil.copyBean(userInfo, UserInfoVo.class));
     }
 }

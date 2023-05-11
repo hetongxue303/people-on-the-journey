@@ -1,5 +1,6 @@
 package com.journey.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.journey.annotation.PrintLog;
 import com.journey.domain.common.Result;
 import com.journey.domain.vo.LoginVo;
@@ -52,6 +53,13 @@ public class UserAuthController {
     @Operation(summary = "用户密码修改")
     public Result updatePassword(@Valid @RequestBody UpwVo upwVo) {
         return loginService.updatePassword(upwVo);
+    }
+
+    @GetMapping("userinfo")
+    @PrintLog("获取个人信息")
+    @Operation(summary = "获取个人信息")
+    public Result getUserinfo() {
+        return loginService.getUserinfo(StpUtil.getLoginId());
     }
 
 }

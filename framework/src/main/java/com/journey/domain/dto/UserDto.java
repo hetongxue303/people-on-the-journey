@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Schema(name = "用户DTO")
-public class UserDto {
+public class UserDto implements Serializable {
 
     @Schema(title = "用户ID")
     private Long id;

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -20,6 +21,7 @@ import java.io.Serializable;
 public class UserInfoVo implements Serializable {
 
     @Schema(title = "用户信息ID")
+    @NotBlank(message = "用户信息ID不能为空")
     private Long id;
 
     @Schema(title = "昵称")

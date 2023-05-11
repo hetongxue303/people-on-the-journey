@@ -44,4 +44,10 @@ public class FileController {
         return fileService.uploadImage(file, QINiuPathEnum.SCENIC_SPOTS);
     }
 
+    @PostMapping("upload/avatar")
+    @Operation(summary = "上传头像")
+    public Result uploadAvatar(MultipartFile file) {
+        return fileService.uploadImage(file, QINiuPathEnum.AVATAR);
+    }
+
 }
