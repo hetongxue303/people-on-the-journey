@@ -55,11 +55,16 @@ public class LoginServiceImpl implements LoginService {
         StpUtil.login(user.getId());
         // 拿到token
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+        // 拿到用户信息
+        UserInfo userInfo = userinfoMapper.selectOne(new LambdaQueryWrapper<UserInfo>().eq(UserInfo::getId, user.getUserinfoId()));
         return Result.success(MapUtil.builder()
                 .put("name", tokenInfo.getTokenName())
                 .put("value", tokenInfo.getTokenValue())
                 .put("timeout", tokenInfo.getTokenTimeout())
-                .put("user", userService.getUserInfo(user.getId()))
+                .put("userId", user.getId())
+                .put("admin", false)
+                .put("username", user.getUsername())
+                .put("userinfo", BeanCopyUtil.copyBean(userInfo, UserInfoVo.class))
                 .build());
     }
 

@@ -8,6 +8,7 @@ import com.journey.domain.common.ResultPage;
 import com.journey.domain.entity.Role;
 import com.journey.domain.vo.RoleVo;
 import com.journey.domain.vo.SearchVo;
+import com.journey.handler.exception.customs.SystemException;
 import com.journey.mapper.RoleMapper;
 import com.journey.service.RoleService;
 import com.journey.utils.BeanCopyUtil;
@@ -48,12 +49,17 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result saveRole(RoleVo roleVo) {
+        if (Objects.nonNull(roleMapper.selectOne(new LambdaQueryWrapper<Role>().eq(Role::getCode, roleVo.getCode()))))
+            throw new SystemException("角色标识已存在");
         return Result.isStatus(roleMapper.insert(BeanCopyUtil.copyBean(roleVo, Role.class)));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result updateRole(RoleVo roleVo) {
+        Role role = roleMapper.selectOne(new LambdaQueryWrapper<Role>().eq(Role::getCode, roleVo.getCode()));
+        if (Objects.nonNull(role) && !Objects.equals(role.getId(), roleVo.getId()))
+            throw new SystemException("角色标识已存在");
         return Result.isStatus(roleMapper.updateById(BeanCopyUtil.copyBean(roleVo, Role.class)));
     }
 

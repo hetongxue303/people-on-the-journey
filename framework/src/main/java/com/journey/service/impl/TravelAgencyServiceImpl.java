@@ -48,12 +48,19 @@ public class TravelAgencyServiceImpl extends ServiceImpl<TravelAgencyMapper, Tra
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result saveTravelAgency(TravelAgencyVo travelAgencyVo) {
+        // 判断是否重名
+//        if (Objects.nonNull(travelAgencyMapper.selectOne(new LambdaQueryWrapper<TravelAgency>().eq(TravelAgency::getName, travelAgencyVo.getName()))))
+//            throw new SystemException("旅行社已存在");
         return Result.isStatus(travelAgencyMapper.insert(BeanCopyUtil.copyBean(travelAgencyVo, TravelAgency.class)));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result updateTravelAgency(TravelAgencyVo travelAgencyVo) {
+        // 判断是否重名
+//        TravelAgency travelAgency = travelAgencyMapper.selectOne(new LambdaQueryWrapper<TravelAgency>().eq(TravelAgency::getName, travelAgencyVo.getName()));
+        //        if (Objects.nonNull(travelAgency) && !Objects.equals(travelAgency.getId(), travelAgencyVo.getId()))
+        //            throw new SystemException("旅行社已存在");
         return Result.isStatus(travelAgencyMapper.updateById(BeanCopyUtil.copyBean(travelAgencyVo, TravelAgency.class)));
     }
 

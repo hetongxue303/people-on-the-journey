@@ -73,6 +73,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result saveUser(UserVo userVo) {
+        // 判断是否重名
+        if (Objects.nonNull(userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, userVo.getUsername()))))
+            throw new SystemException("用户名已存在");
         // 添加用户信息
         UserInfo userinfo = BeanCopyUtil.copyBean(userVo.getUserinfo(), UserInfo.class);
         int result = userinfoMapper.insert(userinfo);
@@ -88,6 +91,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result updateUser(UserVo userVo) {
+        // 判断是否重名
+        User isUser = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, userVo.getUsername()));
+        if (Objects.nonNull(isUser) && !Objects.equals(isUser.getId(), userVo.getId()))
+            throw new SystemException("用户名已存在");
         // 修改用户信息
         UserInfo userinfo = BeanCopyUtil.copyBean(userVo.getUserinfo(), UserInfo.class);
         int result = userinfoMapper.updateById(userinfo);
