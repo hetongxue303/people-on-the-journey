@@ -17,7 +17,9 @@ public enum QINiuPathEnum {
 
     SCENIC_SPOTS(3, "journey/images/scenic-spots/", "景区路径"),
 
-    TRAVEL_AGENCY(4, "journey/images/travel-agency/", "旅行社路径"),
+    TRAVEL_AGENCY(4, "journey/images/travel-agency/", "旅社路径"),
+
+    SHARE(4, "journey/images/share/", "分享路径"),
 
     MARKDOWN(5, "journey/others/markdown/", "md文件路径");
 

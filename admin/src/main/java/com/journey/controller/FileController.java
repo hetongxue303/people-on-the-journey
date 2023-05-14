@@ -33,7 +33,7 @@ public class FileController {
     }
 
     @PostMapping("upload/travel-agency")
-    @Operation(summary = "上传旅游社图片")
+    @Operation(summary = "上传旅社图片")
     public Result uploadTravelAgency(MultipartFile file) {
         return fileService.uploadImage(file, QINiuPathEnum.TRAVEL_AGENCY);
     }
@@ -48,6 +48,12 @@ public class FileController {
     @Operation(summary = "上传头像")
     public Result uploadAvatar(MultipartFile file) {
         return fileService.uploadImage(file, QINiuPathEnum.AVATAR);
+    }
+
+    @PostMapping("upload/share")
+    @Operation(summary = "上传分享图片")
+    public Result uploadShare(MultipartFile file) {
+        return fileService.uploadImage(file, QINiuPathEnum.SHARE);
     }
 
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Schema(name = "景点VO")
-public class ScenicSpotsVo {
+public class ScenicSpotsVo implements Serializable {
 
     @Schema(title = "景点ID")
     private Long id;

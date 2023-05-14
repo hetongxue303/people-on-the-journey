@@ -16,6 +16,7 @@ import java.util.UUID;
 public class FileUtil {
     private static final String DEFAULT_FILE_FORMAT = "yyyyMMddHHmmss";
     private static final String DEFAULT_MONTH_FORMAT = "yyyy-MM-dd";
+    private static  final String[] TYPES={"jfif"};
 
     /**
      * 通过文件名生成文件路径

@@ -6,40 +6,38 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 旅行社VO
+ * 分享VO
  *
  * @author hy
  * @version 1.0
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
-@Schema(name = "旅行社VO")
-public class TravelAgencyVo implements Serializable {
+@Schema(name = "分享VO")
+public class ShareVo implements Serializable {
 
-    @Schema(title = "旅行社ID")
+    @Schema(title = "ID")
     private Long id;
 
-    @Schema(title = "名称")
-    @NotBlank(message = "旅行社名称不能为空")
-    private String name;
+    @Schema(title = "用户信息")
+    private UserInfoVo userinfo;
 
     @Schema(title = "图片")
     private String image;
 
-    @Schema(title = "介绍")
-    private String intro;
+    @Schema(title = "内容")
+    private String content;
 
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")
     private Boolean isDel;
 
-    @Schema(title = "发表时间")
+    @Schema(title = "发布时间")
     private Date createTime;
 
     @Schema(title = "更新时间")
