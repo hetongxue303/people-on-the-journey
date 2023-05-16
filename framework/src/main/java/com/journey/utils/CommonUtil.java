@@ -1,5 +1,7 @@
 package com.journey.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,5 +65,21 @@ public class CommonUtil {
 
         }
         return randomcode;
+    }
+
+    public static String randomOrderNum(Date date) {
+        DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        if (null == date) {
+            date = new Date();
+        }
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(format.format(date));
+        String code = buffer.toString();
+
+        //随机生成四位数
+        String timeMillis = System.currentTimeMillis() + "";
+        String randomNum = timeMillis.substring(timeMillis.length() - 4);
+
+        return code + randomNum;
     }
 }

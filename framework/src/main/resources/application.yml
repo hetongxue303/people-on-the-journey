@@ -89,5 +89,5 @@ sa-token:
 # 日志配置
 logging:
   level:
-    root: info
+    root: off
     com.journey.mapper: debug
