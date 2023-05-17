@@ -28,4 +28,5 @@ public interface OrderService extends IService<Order> {
 
     Result batchDeleteOrder(List<Long> ids);
 
+    Result selectById(Long id, SearchVo searchVo);
 }

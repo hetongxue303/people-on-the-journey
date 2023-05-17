@@ -18,7 +18,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfigure implements WebMvcConfigurer {
     private final String[] intercepts = {"/**"};
-    private final String[] excludes = {"/admin/login", "/file/upload/**", "/user/login", "/user/register"};
+    private final String[] excludes = {"/admin/login", "/file/upload/**", "/user/login", "/user/register", "/share/list/home"};
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

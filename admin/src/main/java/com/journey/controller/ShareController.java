@@ -41,6 +41,13 @@ public class ShareController {
         return shareService.selectList(searchVo);
     }
 
+    @GetMapping("list/home")
+    @PrintLog("首页查询")
+    @Operation(summary = "首页查询")
+    public Result getShareHomeList(SearchVo searchVo) {
+        return shareService.selectHomeList(searchVo);
+    }
+
     @PostMapping("add")
     @PrintLog("新增分享")
     @Operation(summary = "新增分享")

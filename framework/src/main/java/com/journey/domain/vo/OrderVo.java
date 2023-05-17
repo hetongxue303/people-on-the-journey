@@ -50,6 +50,9 @@ public class OrderVo implements Serializable {
     @Schema(title = "状态", description = "0:已预约 1:已接受 2:已拒绝")
     private Integer status;
 
+    @Schema(title = "评分")
+    private Integer rate;
+
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")
     private Boolean isDel;
 

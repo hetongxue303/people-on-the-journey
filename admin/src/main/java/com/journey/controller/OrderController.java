@@ -27,6 +27,12 @@ public class OrderController {
     @Resource
     private OrderService orderService;
 
+    @GetMapping("list/{id}")
+    @PrintLog("查询某人的订单")
+    @Operation(summary = "查询某人的订单")
+    public Result getOrderListById(@PathVariable("id") Long id, SearchVo searchVo) {
+        return orderService.selectById(id,searchVo);
+    }
     @GetMapping("all")
     @PrintLog("查询所有订单")
     @Operation(summary = "查询所有订单")

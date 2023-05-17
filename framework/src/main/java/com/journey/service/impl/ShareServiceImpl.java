@@ -104,4 +104,18 @@ public class ShareServiceImpl extends ServiceImpl<ShareMapper, Share> implements
     public Result batchDeleteShare(List<Long> ids) {
         return Result.isStatus(shareMapper.deleteBatchIds(ids));
     }
+
+    @Override
+    public Result selectHomeList(SearchVo searchVo) {
+        LambdaQueryWrapper<Share> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Share::getId);
+        Page<Share> data = shareMapper.selectPage(MBPUtil.generatePage(searchVo, Share.class), wrapper);
+        List<ShareVo> collects = Optional.ofNullable(data.getRecords()).orElse(new ArrayList<>()).stream().map(item -> {
+            User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getId, item.getUserId()));
+            UserInfo userInfo = userinfoMapper.selectOne(new LambdaQueryWrapper<UserInfo>().eq(Objects.nonNull(user), UserInfo::getId, user.getUserinfoId()));
+            return BeanCopyUtil.copyBean(item, ShareVo.class)
+                    .setUserinfo(BeanCopyUtil.copyBean(userInfo, UserInfoVo.class));
+        }).collect(Collectors.toList());
+        return Result.success(new ResultPage(data.getTotal(), collects));
+    }
 }

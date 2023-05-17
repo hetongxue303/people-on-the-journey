@@ -28,4 +28,5 @@ public interface ShareService extends IService<Share> {
 
     Result batchDeleteShare(List<Long> ids);
 
+    Result selectHomeList(SearchVo searchVo);
 }

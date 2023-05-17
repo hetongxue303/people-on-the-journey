@@ -7,19 +7,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.journey.domain.bo.FoodBo;
 import com.journey.domain.bo.ScenicSpotsBo;
 import com.journey.domain.bo.TravelAgencyBo;
+import com.journey.domain.bo.UserBo;
 import com.journey.domain.common.Result;
 import com.journey.domain.common.ResultPage;
-import com.journey.domain.entity.Food;
-import com.journey.domain.entity.Order;
-import com.journey.domain.entity.ScenicSpots;
-import com.journey.domain.entity.TravelAgency;
+import com.journey.domain.entity.*;
 import com.journey.domain.vo.FoodVo;
 import com.journey.domain.vo.OrderVo;
 import com.journey.domain.vo.SearchVo;
-import com.journey.mapper.FoodMapper;
-import com.journey.mapper.OrderMapper;
-import com.journey.mapper.ScenicSpotsMapper;
-import com.journey.mapper.TravelAgencyMapper;
+import com.journey.handler.exception.customs.SystemException;
+import com.journey.mapper.*;
 import com.journey.service.OrderService;
 import com.journey.utils.BeanCopyUtil;
 import com.journey.utils.CommonUtil;
@@ -29,8 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +46,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private ScenicSpotsMapper scenicSpotsMapper;
     @Resource
     private TravelAgencyMapper travelAgencyMapper;
+    @Resource
+    private UserMapper userMapper;
+    @Resource
+    private RateMapper rateMapper;
+    @Resource
+    private UserinfoMapper userinfoMapper;
 
     @Override
     @Cacheable(cacheNames = "order[all]")
@@ -93,12 +94,39 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result deleteOrder(Long id) {
-        return null;
+        return Result.isStatus(orderMapper.deleteById(id));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result batchDeleteOrder(List<Long> ids) {
-        return null;
+        return Result.isStatus(orderMapper.deleteBatchIds(ids));
+    }
+
+    @Override
+    public Result selectById(Long id, SearchVo searchVo) {
+        Long loginId = Long.valueOf(String.valueOf(StpUtil.getLoginId()));
+        if (!Objects.equals(loginId, id))
+            throw new SystemException("用户不正确");
+        LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Order::getId).eq(Order::getUserId, id);
+        Page<Order> data = orderMapper.selectPage(MBPUtil.generatePage(searchVo, Order.class), wrapper);
+        List<OrderVo> collects = Optional.ofNullable(data.getRecords())
+                .orElse(new ArrayList<>())
+                .stream()
+                .map(item -> BeanCopyUtil.copyBean(item, OrderVo.class)
+                        .setRate(Optional.ofNullable(rateMapper.selectOne(new LambdaQueryWrapper<Rate>().eq(Rate::getOrderId, item.getTId())))
+                                .orElse(new Rate())
+                                .getNum())
+                        .setUser(BeanCopyUtil.copyBean(userinfoMapper.selectById(userMapper.selectById(item.getUserId())
+                                        .getUserinfoId()), UserBo.class)
+                                .setUsername(userMapper.selectById(item.getUserId()).getUsername())
+                                .setUserId(userMapper.selectById(item.getUserId()).getId())
+                                .setUserinfoId(userMapper.selectById(item.getUserId()).getUserinfoId()))
+                        .setScenicSpots(BeanCopyUtil.copyBean(scenicSpotsMapper.selectById(item.getSId()), ScenicSpotsBo.class))
+                        .setFood(BeanCopyUtil.copyBean(foodMapper.selectById(item.getFId()), FoodBo.class))
+                        .setTravelAgency(BeanCopyUtil.copyBean(travelAgencyMapper.selectById(item.getTId()), TravelAgencyBo.class)))
+                .collect(Collectors.toList());
+        return Result.success(new ResultPage(data.getTotal(), collects));
     }
 }
